@@ -1,3 +1,5 @@
+## CG_Lab_Titz120003Alvarez119446
+
 ## OpenGLFramework
 is a small cross-platform framework for learning OpenGL programming
 
