@@ -2,22 +2,33 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
+#include <iostream>
+using namespace std;
+
 #include "application.hpp"
 #include "model.hpp"
 #include "structs.hpp"
+#include <list>
+
 
 class Node : public Application {
 public:
-	// Load constructor
-	Node(Node, std::list<Node>, string, string, int, glm::fmat4, glm::fmat4);
+	// Default Constructor
+	Node();
+
+	// Constructor for root node
+	Node(std::list<Node> children, string name, string path, int depth);
+
+	// Constructor for children nodes
+	Node(Node* parent, std::list<Node> children, string name, string path, int depth);
 
 	// Destructor
 	~Node();
 
 	// getters and setters functions
-	Node getParent() const;
+	Node* getParent() const;
 		// Return parent node
-	void setParent(Node);
+	void setParent(Node* parent);
 		// Set parent node
 
 	string getChildren() const;
@@ -38,27 +49,24 @@ public:
 	glm::fmat4 getLocalTransform() const;
 		// Return local transforma
 
-	void setLocalTransform(glm::fmat4);
+	void setLocalTransform(glm::fmat4 localTransform);
 		// Set local transform
 
 	glm::fmat4 getWorldTransform() const;
 		// Return world transform
 
-	void setWorldTransform(glm::fmat4);
+	void setWorldTransform(glm::fmat4 worldTransform);
 		// Set world transform
 
-	void addChildren(Node);
+	void addChildren(Node*);
 		// add new child
 
-	Node removeChildren(string);
+	Node* removeChildren(string);
 		//remove child
-
-	// Other functions
-
 
 private:
 	// Member attributes
-	Node parent;
+	Node* parent;
 	std::list<Node> children;
 	string name;
 	string path;

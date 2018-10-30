@@ -2,6 +2,9 @@
 #ifndef GEOMETRY_NODE_HPP
 #define GEOMETRY_NODE_HPP
 
+#include <iostream>
+using namespace std;
+
 #include "application.hpp"
 #include "model.hpp"
 #include "structs.hpp"
@@ -10,14 +13,14 @@
 
 class GeometryNode : public Node{
 public:
-    // Load constructor
-	GeometryNode(model);
+    // Default constructor
+	GeometryNode();
     
     // Destructor
     ~GeometryNode();
 
     // getters and setters functions
-    model getGeometry() const;
+    model getGeometry();
         // Return geometry model
     void setGeometry(model);
         // set geometry model
@@ -25,8 +28,6 @@ public:
 private:
     // Member attributes
     model geometry;
-};
-
 };
 
 #endif

@@ -2,6 +2,9 @@
 #ifndef SCENE_GRAPH_HPP
 #define SCENE_GRAPH_HPP
 
+#include <iostream>
+using namespace std;
+
 #include "application.hpp"
 #include "model.hpp"
 #include "structs.hpp"
@@ -9,33 +12,32 @@
 
 class SceneGraph : public Application {
 public:
-	// Load constructor
-	SceneGraph(string, node);
+	// Default constructor
+	SceneGraph();
 
 	// Destructor
 	~SceneGraph();
 
 	// getter functions
-	string getName() const;
+	string getName();
 		// Return the name of the Scene
 
-	node getNode() const;
+	Node* getNode();
 		// Return the root node of the scene
 
 	// Other functions
 	string printGraph();
 
-
 private:
 	// Member attributes
 	string name;
-	node root;
+	Node* root;
 
 	// Setter functions
-	void setName(string);
+	void setName(string name);
 		// Set the name of the node
 
-	void setRoot(node);
+	void setRoot(Node* root);
 		// Set the root node
 };
 

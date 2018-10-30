@@ -10,16 +10,23 @@ using namespace gl;
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <string>
 #include <iostream>
 
-//Node constructor
-Node::Node(Node newparent, std::list<Node> newchildren, string newname, string newpath, int newdepth, glm::fmat4 newlocalTransform, glm::fmat4 newworldTransform){
-	parent = newparent;
+//Node constructors
+Node::Node(){
+}
+
+Node::Node(std::list<Node> newChildren, string newName, string newPath, int newDepth){
+	name = newName;
 	children = newchildren;
-	name = newname;
 	path = newpath;
 	depth = newdepth;
-	localTransform = newlocaltransform;
-	worldTransform = newworldtransform;
+}
+
+Node::Node(Node* newParent, std::list<Node> newChildren, string newName, string newPath, int newDepth){
+	parent = newParent
+	name = newName;
+	children = newchildren;
+	path = newpath;
+	depth = newdepth;
 }

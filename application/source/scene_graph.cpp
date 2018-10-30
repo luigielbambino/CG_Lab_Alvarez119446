@@ -10,13 +10,12 @@ using namespace gl;
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <string>
 #include <iostream>
 
 // SceneGraph Constructor
-SceneGraph::SceneGraph(string newname, node newroot){
-	name = newname;
-	root = newroot;
+SceneGraph::SceneGraph(){
+	name = "solar system";
+	root = new Node();
 }
 
 // Deconstructor
@@ -28,7 +27,7 @@ string SceneGraph:::getName() const {
 	return name;
 }
 
-node SceneGraph:::getRoot() const {
+Node SceneGraph:::getRoot() const {
 	return root;
 }
 
@@ -37,7 +36,7 @@ void SceneGraph::setName(string newname){
 	name = newname;
 }
 
-void SceneGraph::setRoot(node newroot){
+void SceneGraph::setRoot(Node newroot){
 	root = newroot;
 }
 

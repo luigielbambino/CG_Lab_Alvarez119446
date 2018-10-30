@@ -6,6 +6,7 @@
 #include "model_loader.hpp"
 #include "scene_graph.hpp"
 #include "node.hpp"
+#include "geometry_node.hpp"
 
 #include <glbinding/gl/gl.h>
 // use gl definitions from glbinding 
@@ -27,6 +28,10 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
  ,m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
  ,m_view_projection{utils::calculate_projection_matrix(initial_aspect_ratio)}
 {
+  scenegraph = new SceneGraph();
+  //std::list<Node> children;
+  //Node* sun(children, "sun", "", 0);
+
   initializeGeometry();
   initializeShaderPrograms();
 }
@@ -162,5 +167,4 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
 // exe entry point
 int main(int argc, char* argv[]) {
   Application::run<ApplicationSolar>(argc, argv, 3, 2);
-  //SceneGraph scenegraph(name, root);
 }

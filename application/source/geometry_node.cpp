@@ -10,10 +10,9 @@ using namespace gl;
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <string>
 #include <iostream>
 
 //Geometry Node constructor
-GeometryNode::GeometryNode(model newgeometry){
-    geometry = newgeometry;
+GeometryNode::GeometryNode(){
+    //geometry = newgeometry;
 }
