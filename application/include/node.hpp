@@ -5,28 +5,25 @@
 #include "application.hpp"
 #include "model.hpp"
 #include "structs.hpp"
-#include <list>
 
-using namespace std;
-
-class node : public Application {
+class Node : public Application {
 public:
 	// Load constructor
-	node(node, node[], string, string, int, glm::fmat4, glm::fmat4);
+	Node(Node, std::list<Node>, string, string, int, glm::fmat4, glm::fmat4);
 
 	// Destructor
-	~node();
+	~Node();
 
 	// getters and setters functions
-	node getParent() const;
+	Node getParent() const;
 		// Return parent node
-	void setParent(node);
+	void setParent(Node);
 		// Set parent node
 
 	string getChildren() const;
 		// Return children name
 
-	std::list<node> getChildrenList() const;
+	std::list<Node> getChildrenList() const;
 		// Return children list
 
 	string getName() const;
@@ -50,10 +47,10 @@ public:
 	void setWorldTransform(glm::fmat4);
 		// Set world transform
 
-	void addChildren(node);
+	void addChildren(Node);
 		// add new child
 
-	node removeChildren(string);
+	Node removeChildren(string);
 		//remove child
 
 	// Other functions
@@ -61,8 +58,8 @@ public:
 
 private:
 	// Member attributes
-	node parent;
-	std::list<node> children;
+	Node parent;
+	std::list<Node> children;
 	string name;
 	string path;
 	int depth;

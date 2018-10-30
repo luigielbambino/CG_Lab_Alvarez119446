@@ -13,13 +13,13 @@ using namespace gl;
 #include <string>
 #include <iostream>
 
-//Member attributes
-node::node(node parent, std::list<node> children, string name, string path, int depth, glm::fmat4 localTransform, glm::fmat4 worldTransform){
-	node parent;
-	std::list<node> children;
-	string name;
-	string path;
-	int depth;
-	glm::fmat4 localTransform;
-	glm::fmat4 worldTransform;
+//Node constructor
+Node::Node(Node newparent, std::list<Node> newchildren, string newname, string newpath, int newdepth, glm::fmat4 newlocalTransform, glm::fmat4 newworldTransform){
+	parent = newparent;
+	children = newchildren;
+	name = newname;
+	path = newpath;
+	depth = newdepth;
+	localTransform = newlocaltransform;
+	worldTransform = newworldtransform;
 }

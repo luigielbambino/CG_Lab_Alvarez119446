@@ -7,8 +7,6 @@
 #include "structs.hpp"
 #include "node.hpp"
 
-using namespace std;
-
 class SceneGraph : public Application {
 public:
 	// Load constructor

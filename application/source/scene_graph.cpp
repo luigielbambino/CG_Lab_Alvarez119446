@@ -13,12 +13,6 @@ using namespace gl;
 #include <string>
 #include <iostream>
 
-//Member attributes
-scene_graph::scene_graph(){
-	name = "name";
-	root = root;
-}
-
 // SceneGraph Constructor
 SceneGraph::SceneGraph(string newname, node newroot){
 	name = newname;
