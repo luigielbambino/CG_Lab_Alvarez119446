@@ -1,22 +1,21 @@
-// Header, Functions declarations
-#ifndef SCENEGRAPH_HPP
-#define SCENEGRAPH_HPP
+// SceneGraph Header, Functions declarations
+#ifndef SCENE_GRAPH_HPP
+#define SCENE_GRAPH_HPP
 
-#include <iostream>
-#include <string>
+#include "application.hpp"
+#include "model.hpp"
+#include "structs.hpp"
+#include "node.hpp"
 
 using namespace std;
 
-class SceneGraph{
+class SceneGraph : public Application {
 public:
-	// Default constructor
-	SceneGraph();
-
 	// Load constructor
 	SceneGraph(string, node);
 
 	// Destructor
-	~ApplicationSolar();
+	~SceneGraph();
 
 	// getter functions
 	string getName() const;
@@ -40,7 +39,6 @@ private:
 
 	void setRoot(node);
 		// Set the root node
-
 };
 
 #endif
