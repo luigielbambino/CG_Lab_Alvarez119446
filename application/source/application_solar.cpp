@@ -30,28 +30,39 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
  ,m_view_transform{translate(glm::fmat4{}, glm::fvec3{0.0f, 4.0f, 30.0f})}
  ,m_view_projection{utils::calculate_projection_matrix(initial_aspect_ratio)}
 {
-  // Defining solar system elements
-  init_node({0.0f, 1.0f, 0.5f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}, "sun");
-  init_node({0.0f, 1.0f, 0.5f}, {1.0f, 0.0f, 5.0f}, {0.1f, 0.1f, 0.1f}, "mercury");
-  init_node({0.0f, 1.0f, 0.5f}, {2.0f, 0.0f, -7.0f}, {0.2f, 0.2f, 0.2f}, "venus");
-  init_node({0.0f, 1.0f, 0.5f}, {10.0f, 0.0f, 2.0f}, {0.3f, 0.3f, 0.3f}, "earth");
-  init_node({0.0f, 1.0f, 0.5f}, {2.0f, 0.0f, -14.0f}, {0.4f, 0.4f, 0.4f}, "mars");
-  init_node({0.0f, 1.0f, 0.5f}, {-16.0f, 0.0f, 0.0f}, {0.8f, 0.8f, 0.8f}, "jupiter");
-  init_node({0.0f, 1.0f, 0.5f}, {-5.0f, 0.0f, 18.0f}, {0.5f, 0.5f, 0.5f}, "saturn");
-  init_node({0.0f, 1.0f, 0.5f}, {5.0f, 0.0f, -20.0f}, {0.6f, 0.6f, 0.6f}, "uranus");
-  init_node({0.0f, 1.0f, 0.5f}, {22.0f, 0.0f, -22.0f}, {0.7f, 0.7f, 0.7f}, "neptune");
-  init_node({0.0f, 1.0f, 0.5f}, {30.0f, 0.0f, -20.0f}, {0.1f, 0.1f, 0.1f}, "pluto");
+
+  //Node* planet_node = new Node("SolarSystem");
+  // Defining transformations for each element in the solar system
+  init_node({0.0f, 1.0f, 0.1f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}, "sun");
+  init_node({0.0f, 1.0f, 0.1f}, {1.0f, 0.0f, 5.0f}, {0.1f, 0.1f, 0.1f}, "mercury");
+  init_node({0.0f, 1.0f, 0.1f}, {2.0f, 0.0f, -7.0f}, {0.2f, 0.2f, 0.2f}, "venus");
+  init_node({0.0f, 1.0f, 0.1f}, {10.0f, 0.0f, 2.0f}, {0.3f, 0.3f, 0.3f}, "earth");
+  init_node({0.0f, 1.0f, 0.1f}, {2.0f, 0.0f, -14.0f}, {0.4f, 0.4f, 0.4f}, "mars");
+  init_node({0.0f, 1.0f, 0.1f}, {-16.0f, 0.0f, 0.0f}, {0.8f, 0.8f, 0.8f}, "jupiter");
+  init_node({0.0f, 1.0f, 0.1f}, {-5.0f, 0.0f, 18.0f}, {0.5f, 0.5f, 0.5f}, "saturn");
+  init_node({0.0f, 1.0f, 0.1f}, {5.0f, 0.0f, -20.0f}, {0.6f, 0.6f, 0.6f}, "uranus");
+  init_node({0.0f, 1.0f, 0.1f}, {22.0f, 0.0f, -22.0f}, {0.7f, 0.7f, 0.7f}, "neptune");
+  init_node({0.0f, 1.0f, 0.1f}, {30.0f, 0.0f, -20.0f}, {0.1f, 0.1f, 0.1f}, "pluto");
+
+  // Initialiye geomtry and shaders program
   initializeGeometry();
   initializeShaderPrograms();
 }
 
+// Define node initializer with transformation vectors and name of the element
 void ApplicationSolar::init_node(glm::fvec3 rotation, glm::fvec3 translation, glm::fvec3 scale, std::string nodeName){
+  // Initialize node
   node new_node;
+  // set rotation for new node
   new_node.rotation = rotation;
+  // set translation for new node
   new_node.translation = translation;
+  // set scale for new node
   new_node.scale = scale;
+  // set name of the node
   new_node.nodeName = nodeName;
 
+  //push new node to the back of the vector list
   node_list.push_back(new_node);
 }
 
@@ -66,9 +77,10 @@ void ApplicationSolar::render() const {
 
   // loop to draw all the elements of the node list
   for(int i = 0; i < node_list.size(); i++){
+    //set node list to a variable which can be manipulated to retrieve data of each element of the solar system
     node currentNode = node_list[i];
     glUseProgram(m_shaders.at("planet").handle);
-    // Creating the planet
+    // Aply transformations to the elements to be drawn
     glm::fmat4 model_matrix = rotate(glm::fmat4{}, float(glfwGetTime()), currentNode.rotation);
     model_matrix = translate(model_matrix, currentNode.translation);
     model_matrix = scale(model_matrix, currentNode.scale);
