@@ -16,3 +16,12 @@ using namespace gl;
 GeometryNode::GeometryNode(){
     //geometry = newgeometry;
 }
+
+// getters and setters definitios
+model GeometryNode::getGeometry(){
+	return geometry;
+}
+
+void GeometryNode::setGeometry(model newgeometry){
+	geometry = newgeometry;
+}

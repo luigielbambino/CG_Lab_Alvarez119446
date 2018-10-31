@@ -14,20 +14,20 @@ using namespace gl;
 
 // SceneGraph Constructor
 SceneGraph::SceneGraph(){
-	name = "solar system";
-	root = new Node();
+	name = "Solar System";
+	root = new root("sun");
 }
 
 // Deconstructor
-SceneGraph:::~SceneGraph(){}
+SceneGraph::~SceneGraph(){}
 
 
 //Setters
-string SceneGraph:::getName() const {
+string SceneGraph::getName() const {
 	return name;
 }
 
-Node SceneGraph:::getRoot() const {
+Node SceneGraph::getRoot() const {
 	return root;
 }
 

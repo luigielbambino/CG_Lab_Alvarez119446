@@ -7,10 +7,12 @@
 #include "scene_graph.hpp"
 #include "node.hpp"
 #include "geometry_node.hpp"
+#include "camera_node.hpp"
 
 #include <glbinding/gl/gl.h>
 // use gl definitions from glbinding 
 using namespace gl;
+using namespace std;
 
 //dont load gl bindings from glfw
 #define GLFW_INCLUDE_NONE
@@ -25,16 +27,32 @@ using namespace gl;
 ApplicationSolar::ApplicationSolar(std::string const& resource_path)
  :Application{resource_path}
  ,planet_object{}
- ,m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
+ ,m_view_transform{translate(glm::fmat4{}, glm::fvec3{0.0f, 4.0f, 20.0f})}
  ,m_view_projection{utils::calculate_projection_matrix(initial_aspect_ratio)}
 {
-  initialize_Planet();
-  //scenegraph = new SceneGraph();
-  //std::list<Node> children;
-  //Node* sun(children, "sun", "", 0);
-
+  // Defining solar system elements
+  init_node({1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}, "sun");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {0.1f, 0.1f, 0.1f}, "mercury");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, "venus");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, "earth");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, "mars");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, "jupiter");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, "saturn");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, "uranus");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, "neptune");
+  init_node({1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, "pluto");
   initializeGeometry();
   initializeShaderPrograms();
+}
+
+void ApplicationSolar::init_node(glm::fvec3 rotation, glm::fvec3 translation, glm::fvec3 scale, std::string nodeName){
+  node new_node;
+  new_node.rotation = rotation;
+  new_node.translation = translation;
+  new_node.scale = scale;
+  new_node.nodeName = nodeName;
+
+  node_list.push_back(new_node);
 }
 
 ApplicationSolar::~ApplicationSolar() {
@@ -45,23 +63,50 @@ ApplicationSolar::~ApplicationSolar() {
 
 void ApplicationSolar::render() const {
   // bind shader to upload uniforms
+
+
+
+  for(int i = 0; i <= 1; i++){
+    glUseProgram(m_shaders.at("planet").handle);
+    // Creating the planet
+    glm::fmat4 model_matrix = rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{1.0f, 1.0f, 1.0f});
+    model_matrix = translate(model_matrix, glm::fvec3{0.0f, 0.0f, 0.0f});
+    model_matrix = scale(model_matrix, glm::fvec3{2.0f, 2.0f, 2.0f});
+    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
+                       1, GL_FALSE, glm::value_ptr(model_matrix));
+
+    // extra matrix for normal transformation to keep them orthogonal to surface
+    glm::fmat4 normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
+    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("NormalMatrix"),
+                       1, GL_FALSE, glm::value_ptr(normal_matrix));
+
+    // bind the VAO to draw
+    glBindVertexArray(planet_object.vertex_AO);
+
+    // draw bound vertex array using bound shader
+    glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
+
+  // creating new planet render
   glUseProgram(m_shaders.at("planet").handle);
+    // Creating planet
+    model_matrix = rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{1.0f, 5.0f, 1.0f});
+    model_matrix = translate(model_matrix, glm::fvec3{0.0f, 0.0f, -5.0f});
+    model_matrix = scale(model_matrix, glm::fvec3{0.2f, 0.2f, 0.2f});
+    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
+                       1, GL_FALSE, glm::value_ptr(model_matrix));
 
-  glm::fmat4 model_matrix = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{0.0f, 1.0f, 0.0f});
-  model_matrix = glm::translate(model_matrix, glm::fvec3{0.0f, 0.0f, -1.0f});
-  glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
-                     1, GL_FALSE, glm::value_ptr(model_matrix));
+    // extra matrix for normal transformation to keep them orthogonal to surface
+    normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
+    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("NormalMatrix"),
+                       1, GL_FALSE, glm::value_ptr(normal_matrix));
 
-  // extra matrix for normal transformation to keep them orthogonal to surface
-  glm::fmat4 normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
-  glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("NormalMatrix"),
-                     1, GL_FALSE, glm::value_ptr(normal_matrix));
+    // bind the VAO to draw
+    glBindVertexArray(planet_object.vertex_AO);
 
-  // bind the VAO to draw
-  glBindVertexArray(planet_object.vertex_AO);
+    // draw bound vertex array using bound shader
+    glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
+  }
 
-  // draw bound vertex array using bound shader
-  glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
 }
 
 void ApplicationSolar::uploadView() {
@@ -73,7 +118,7 @@ void ApplicationSolar::uploadView() {
 }
 
 void ApplicationSolar::uploadProjection() {
-  // upload matrix to gpu
+  // upload sun matrix to gpu
   glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ProjectionMatrix"),
                      1, GL_FALSE, glm::value_ptr(m_view_projection));
 }
@@ -90,14 +135,16 @@ void ApplicationSolar::uploadUniforms() {
 ///////////////////////////// intialisation functions /////////////////////////
 // load shader sources
 void ApplicationSolar::initializeShaderPrograms() {
-  // store shader program objects in container
+  // store shader program objects for planet in container
   m_shaders.emplace("planet", shader_program{{{GL_VERTEX_SHADER,m_resource_path + "shaders/simple.vert"},
                                            {GL_FRAGMENT_SHADER, m_resource_path + "shaders/simple.frag"}}});
-  // request uniform locations for shader program
+  
+  // request uniform locations for shader program for planet
   m_shaders.at("planet").u_locs["NormalMatrix"] = -1;
   m_shaders.at("planet").u_locs["ModelMatrix"] = -1;
   m_shaders.at("planet").u_locs["ViewMatrix"] = -1;
   m_shaders.at("planet").u_locs["ProjectionMatrix"] = -1;
+
 }
 
 // load models
@@ -163,7 +210,6 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
   // upload new projection matrix
   uploadProjection();
 }
-
 
 // exe entry point
 int main(int argc, char* argv[]) {

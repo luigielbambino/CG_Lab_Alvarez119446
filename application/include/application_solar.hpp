@@ -6,9 +6,25 @@
 #include "structs.hpp"
 #include "scene_graph.hpp"
 
+using namespace std;
+using namespace glm;
+
 // gpu representation of model
 class ApplicationSolar : public Application {
  public:
+  // Struct with the data to render planets
+  // http://www.cplusplus.com/doc/tutorial/structures/
+  struct node
+  {
+    glm::fvec3 rotation;
+    glm::fvec3 translation;
+    glm::fvec3 scale;
+    string nodeName;
+  };
+
+  // Declare list to store the planet nodes
+  vector<node> node_list;
+
   // allocate and initialize objects
   ApplicationSolar(std::string const& resource_path);
   // free allocated objects
@@ -23,6 +39,9 @@ class ApplicationSolar : public Application {
 
   // draw all objects
   void render() const;
+
+  // Delaration of planet data
+  void init_node(glm::fvec3 rotation, glm::fvec3 translation, glm::fvec3 scale, std::string nodeName);
 
  protected:
   void initializeShaderPrograms();
@@ -41,8 +60,6 @@ class ApplicationSolar : public Application {
   glm::fmat4 m_view_transform;
   // camera projection matrix
   glm::fmat4 m_view_projection;
-
-  SceneGraph* sceneGraph;
 };
 
 #endif

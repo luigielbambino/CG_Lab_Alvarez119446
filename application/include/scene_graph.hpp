@@ -6,11 +6,12 @@
 using namespace std;
 
 #include "application.hpp"
+#include "application_solar.hpp"
 #include "model.hpp"
 #include "structs.hpp"
 #include "node.hpp"
 
-class SceneGraph : public Application {
+class SceneGraph{
 public:
 	// Default constructor
 	SceneGraph();

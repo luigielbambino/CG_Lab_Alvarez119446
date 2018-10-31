@@ -9,61 +9,62 @@ using namespace std;
 #include "model.hpp"
 #include "structs.hpp"
 #include <list>
+#include <string>
 
 
-class Node : public Application {
+class Node{
 public:
 	// Default Constructor
-	Node();
+	Node(std::string name);
 
 	// Constructor for root node
-	Node(std::list<Node> children, string name, string path, int depth);
+	Node(std::list<Node> newchildren, string newname, string newpath, int newdepth);
 
 	// Constructor for children nodes
-	Node(Node* parent, std::list<Node> children, string name, string path, int depth);
+	Node(Node* newparent, std::list<Node> newchildren, string newname, string newpath, int newdepth);
 
 	// Destructor
 	~Node();
 
 	// getters and setters functions
-	Node* getParent() const;
+	Node* getParent();
 		// Return parent node
-	void setParent(Node* parent);
+	void setParent(Node* newparent);
 		// Set parent node
 
-	string getChildren() const;
+	string getChildren();
 		// Return children name
 
-	std::list<Node> getChildrenList() const;
+	std::list<Node> getChildrenList();
 		// Return children list
 
-	string getName() const;
+	string getName();
 		// Return name of the parent node
 
-	string getPath() const;
+	string getPath();
 		// Return path
 
-	int getDepth() const;
+	int getDepth();
 		// Return depth
 
-	glm::fmat4 getLocalTransform() const;
+	glm::fmat4 getLocalTransform();
 		// Return local transforma
 
-	void setLocalTransform(glm::fmat4 localTransform);
+	void setLocalTransform(glm::fmat4 newlocalTransform);
 		// Set local transform
 
-	glm::fmat4 getWorldTransform() const;
+	glm::fmat4 getWorldTransform();
 		// Return world transform
 
-	void setWorldTransform(glm::fmat4 worldTransform);
+	void setWorldTransform(glm::fmat4 newworldTransform);
 		// Set world transform
 
-	void addChildren(Node*);
+	void addChildren(Node* newnode);
 		// add new child
 
-	Node* removeChildren(string);
+	Node* removeChildren(string newname);
 		//remove child
-
+	
 private:
 	// Member attributes
 	Node* parent;
